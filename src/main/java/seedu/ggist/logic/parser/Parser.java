@@ -25,6 +25,9 @@ public class Parser {
 
     private static final Pattern KEYWORDS_ARGS_FORMAT =
             Pattern.compile("(?<keywords>\\S+(?:\\s+\\S+)*)"); // one or more keywords separated by whitespace
+    
+    private static final Pattern LIST_ARGS_FORMAT =
+            Pattern.compile("(?<listing>\\S*)");
 
     //regex for tasks without deadline
     private static final Pattern FLOATING_TASK_DATA_ARGS_FORMAT = 
@@ -64,27 +67,30 @@ public class Parser {
 
         case DeleteCommand.COMMAND_WORD:
             return prepareDelete(arguments);
+            
+        case DoneCommand.COMMAND_WORD:
+            return prepareDone(arguments);
         
-        case EditCommand.COMMAND_WORD:
-        	return prepareEdit(arguments);
+        case EditCommand.COMMAND_WORD: 
+            return prepareEdit(arguments);
+                
+        case UndoCommand.COMMAND_WORD:
+            return new UndoCommand();
         	
         case ClearCommand.COMMAND_WORD:
             return new ClearCommand();
 
         case SearchCommand.COMMAND_WORD:
-            return prepareFind(arguments);
+            return prepareSearch(arguments);
 
         case ListCommand.COMMAND_WORD:
-            return new ListCommand();
-
+            return prepareList(arguments);
+                
         case ExitCommand.COMMAND_WORD:
             return new ExitCommand();
 
         case HelpCommand.COMMAND_WORD:
             return new HelpCommand();
-            
-        case UndoCommand.COMMAND_WORD:
-            return new UndoCommand();
 
         default:
             return new IncorrectCommand(MESSAGE_UNKNOWN_COMMAND);
@@ -187,6 +193,22 @@ public class Parser {
         return new DeleteCommand(index.get());
     }
     
+    /**
+     * Parses arguments in the context of the done task command.
+     *
+     * @param args full command args string
+     * @return the prepared command
+     */
+    private Command prepareDone(String args) {
+
+        Optional<Integer> index = parseIndex(args);
+        if(!index.isPresent()){
+            return new IncorrectCommand(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, DoneCommand.MESSAGE_USAGE));
+        }
+        return new DoneCommand(index.get());
+    }
+    
     private Command prepareEdit(String args) {
     	
     	String type;
@@ -251,7 +273,7 @@ public class Parser {
      * @param args full command args string
      * @return the prepared command
      */
-    private Command prepareFind(String args) {
+    private Command prepareSearch(String args) {
         final Matcher matcher = KEYWORDS_ARGS_FORMAT.matcher(args.trim());
         if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
@@ -262,6 +284,23 @@ public class Parser {
         final String[] keywords = matcher.group("keywords").split("\\s+");
         final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
         return new SearchCommand(keywordSet);
+    }
+    
+    /**
+     * Parses arguments in the context of the list command.
+     *
+     * @param args full command args string
+     * @return the prepared command
+     */
+    private Command prepareList(String args) {
+        final Matcher matcher = LIST_ARGS_FORMAT.matcher(args.trim());
+        if (!matcher.matches()) {
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    SearchCommand.MESSAGE_USAGE));
+        }
+        
+        final String listing = matcher.group("listing");
+        return new ListCommand(listing);
     }
 
 }
