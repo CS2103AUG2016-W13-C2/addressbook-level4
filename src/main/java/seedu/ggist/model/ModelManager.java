@@ -1,5 +1,17 @@
 package seedu.ggist.model;
 
+import java.util.stream.IntStream;
+
+import javafx.beans.Observable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener.Change;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+
 import javafx.collections.transformation.FilteredList;
 import seedu.ggist.commons.core.ComponentManager;
 import seedu.ggist.commons.core.LogsCenter;
@@ -20,20 +32,20 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 /**
- * Represents the in-memory model of the task manager data.
- * All changes to any model should be synchronized.
+ * Represents the in-memory model of the task manager data. All changes to any
+ * model should be synchronized.
  */
 public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
     private final TaskManager taskManager;
     private final FilteredList<Task> filteredTasks;
-    
+
     public static final String MESSAGE_INVALID_TASK_TYPE = "%1$s is not a valid type";
 
     /**
-     * Initializes a ModelManager with the given TaskManager
-     * TaskManager and its variables should not be null
+     * Initializes a ModelManager with the given TaskManager TaskManager and its
+     * variables should not be null
      */
     public ModelManager(TaskManager src, UserPrefs userPrefs) {
         super();
@@ -44,6 +56,15 @@ public class ModelManager extends ComponentManager implements Model {
 
         taskManager = new TaskManager(src);
         filteredTasks = new FilteredList<>(taskManager.getTasks(), t -> !t.getTaskName().isFiltered());
+
+        filteredTasks.addListener((Change<? extends Task> c) -> {
+            while (c.next()) {
+                if (c.wasUpdated()) {
+                    //update
+                }
+            }
+        });
+
     }
 
     public ModelManager() {
@@ -52,7 +73,14 @@ public class ModelManager extends ComponentManager implements Model {
 
     public ModelManager(ReadOnlyTaskManager initialData, UserPrefs userPrefs) {
         taskManager = new TaskManager(initialData);
-        filteredTasks = new FilteredList<>(taskManager.getTasks());
+        filteredTasks = new FilteredList<>(taskManager.getTasks(), t -> !t.getTaskName().isFiltered());
+        filteredTasks.addListener((Change<? extends Task> c) -> {
+            while (c.next()) {
+                if (c.wasUpdated()) {
+                    //update
+                }
+            }
+        });
     }
 
     @Override
@@ -76,49 +104,48 @@ public class ModelManager extends ComponentManager implements Model {
         taskManager.removeTask(target);
         indicateTaskManagerChanged();
     }
-    
+
     @Override
     public synchronized void doneTask(ReadOnlyTask target) throws TaskNotFoundException {
         taskManager.doneTask(target);
         indicateTaskManagerChanged();
     }
 
-    public synchronized void editTask (int index, String type, String toEdit) throws TaskTypeNotFoundException {
-    	Task toBeEditedTask = filteredTasks.get(index-1);
-    	switch (type) {
-    	case "task":
-    		try{
-    			toBeEditedTask.getTaskName().editTaskName(toEdit);
-    		} catch (IllegalValueException ive) {
-    			System.out.printf(MESSAGE_INVALID_TASK_TYPE,type);
-    		}
-    		break;
-    	case "date":
-    		try{
-    		 toBeEditedTask.getDate().editDate(toEdit);
-    		} catch (IllegalValueException ive) {
-    			System.out.printf(MESSAGE_INVALID_TASK_TYPE,type);
-    		}
-    		 break;
-    	case "start":
-    		try{
-    		toBeEditedTask.getStartTime().editTime(toEdit);
-    		} catch (IllegalValueException ive) {
-    			System.out.printf(MESSAGE_INVALID_TASK_TYPE,type);
-    		}
-    		break;
-    	case "end":
-    		try{
-    		toBeEditedTask.getEndTime().editTime(toEdit);
-    		} catch (IllegalValueException ive) {
-    			System.out.printf(MESSAGE_INVALID_TASK_TYPE,type);
-    		}
-    		break;
-    	default:
-    		throw new TaskTypeNotFoundException();
-    	}
-        updateFilteredListToShowAll();
-    	indicateTaskManagerChanged();
+    public synchronized void editTask(int index, String type, String toEdit) throws TaskTypeNotFoundException {
+        Task toBeEditedTask = filteredTasks.get(index - 1);
+        switch (type) {
+        case "task":
+            try {
+                toBeEditedTask.getTaskName().editTaskName(toEdit);
+            } catch (IllegalValueException ive) {
+                System.out.printf(MESSAGE_INVALID_TASK_TYPE, type);
+            }
+            break;
+        case "date":
+            try {
+                toBeEditedTask.getDate().editDate(toEdit);
+            } catch (IllegalValueException ive) {
+                System.out.printf(MESSAGE_INVALID_TASK_TYPE, type);
+            }
+            break;
+        case "start":
+            try {
+                toBeEditedTask.getStartTime().editTime(toEdit);
+            } catch (IllegalValueException ive) {
+                System.out.printf(MESSAGE_INVALID_TASK_TYPE, type);
+            }
+            break;
+        case "end":
+            try {
+                toBeEditedTask.getEndTime().editTime(toEdit);
+            } catch (IllegalValueException ive) {
+                System.out.printf(MESSAGE_INVALID_TASK_TYPE, type);
+            }
+            break;
+        default:
+            throw new TaskTypeNotFoundException();
+        }
+        indicateTaskManagerChanged();
     }
 
     @Override
@@ -128,7 +155,8 @@ public class ModelManager extends ComponentManager implements Model {
         indicateTaskManagerChanged();
     }
 
-    //=========== Filtered Task List Accessors ===============================================================
+    // =========== Filtered Task List Accessors
+    // ===============================================================
 
     @Override
     public UnmodifiableObservableList<ReadOnlyTask> getFilteredTaskList() {
@@ -139,27 +167,27 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredListToShowAll() {
         filteredTasks.setPredicate(null);
     }
-    
+
     @Override
     public void updateFilteredListToShowAllDone() {
         updateFilteredListToShowAllDone(new PredicateExpression(new DoneQualifier()));
     }
-    
+
     public void updateFilteredListToShowAllDone(Expression expression) {
         filteredTasks.setPredicate(expression::satisfies);
     }
-    
+
     @Override
     public void updateFilteredTaskListToShowUndone() {
         updateFilteredTaskListToShowUndone(new PredicateExpression(new NotDoneQualifier()));
     }
-    
+
     public void updateFilteredTaskListToShowUndone(Expression expression) {
         filteredTasks.setPredicate(expression::satisfies);
     }
 
     @Override
-    public void updateFilteredTaskList(Set<String> keywords){
+    public void updateFilteredTaskList(Set<String> keywords) {
         updateFilteredTaskList(new PredicateExpression(new NameQualifier(keywords)));
     }
 
@@ -170,10 +198,12 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredTaskListAfterEdit() {
         filteredTasks.setPredicate(t -> !t.getTaskName().filteredProperty().get());
     }
-    //========== Inner classes/interfaces used for filtering ==================================================
+    // ========== Inner classes/interfaces used for filtering
+    // ==================================================
 
     interface Expression {
         boolean satisfies(ReadOnlyTask task);
+
         String toString();
     }
 
@@ -198,22 +228,25 @@ public class ModelManager extends ComponentManager implements Model {
 
     interface Qualifier {
         boolean run(ReadOnlyTask task);
+
         String toString();
     }
-    
+
     private class NotDoneQualifier implements Qualifier {
-        
-        NotDoneQualifier() {}
-        
+
+        NotDoneQualifier() {
+        }
+
         public boolean run(ReadOnlyTask task) {
             return (!task.getDone());
         }
     }
-    
+
     private class DoneQualifier implements Qualifier {
-        
-        DoneQualifier() {}
-        
+
+        DoneQualifier() {
+        }
+
         public boolean run(ReadOnlyTask task) {
             return task.getDone();
         }
@@ -229,10 +262,8 @@ public class ModelManager extends ComponentManager implements Model {
         @Override
 
         public boolean run(ReadOnlyTask task) {
-            return taskNameKeyWords.stream()
-                    .filter(keyword -> StringUtil.containsIgnoreCase(task.toString(), keyword))
-                    .findAny()
-                    .isPresent();
+            return taskNameKeyWords.stream().filter(keyword -> StringUtil.containsIgnoreCase(task.toString(), keyword))
+                    .findAny().isPresent();
         }
 
         @Override
