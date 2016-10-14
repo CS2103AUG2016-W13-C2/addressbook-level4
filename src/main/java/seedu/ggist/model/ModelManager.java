@@ -43,7 +43,7 @@ public class ModelManager extends ComponentManager implements Model {
         logger.fine("Initializing with task manager: " + src + " and user prefs " + userPrefs);
 
         taskManager = new TaskManager(src);
-        filteredTasks = new FilteredList<>(taskManager.getTasks());
+        filteredTasks = new FilteredList<>(taskManager.getTasks(), t -> !t.getTaskName().isFiltered());
     }
 
     public ModelManager() {
@@ -167,6 +167,9 @@ public class ModelManager extends ComponentManager implements Model {
         filteredTasks.setPredicate(expression::satisfies);
     }
 
+    public void updateFilteredTaskListAfterEdit() {
+        filteredTasks.setPredicate(t -> !t.getTaskName().filteredProperty().get());
+    }
     //========== Inner classes/interfaces used for filtering ==================================================
 
     interface Expression {

@@ -1,5 +1,17 @@
 package seedu.ggist.model.task;
 
+import java.util.stream.IntStream;
+
+import javafx.beans.Observable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener.Change;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+
 import seedu.ggist.commons.exceptions.IllegalValueException;
 
 /**
@@ -11,7 +23,20 @@ public class TaskName {
     public static final String MESSAGE_NAME_CONSTRAINTS = "Tasks should be spaces or alphanumeric characters";
     public static final String NAME_VALIDATION_REGEX = "[\\p{Alnum} ]+";
 
-    public String taskName;
+    public StringProperty taskName = new SimpleStringProperty();
+    public BooleanProperty filtered = new SimpleBooleanProperty();
+    
+    public BooleanProperty filteredProperty() {
+        return this.filtered;
+    }
+    
+    public final boolean isFiltered() {
+        return this.filteredProperty().get();
+    }
+    
+    public void setFiltered(boolean filtered) {
+        this.filteredProperty().set(filtered);
+    }
 
     /**
      * Validates given task name.
@@ -24,7 +49,15 @@ public class TaskName {
         if (!isValidName(taskName)) {
             throw new IllegalValueException(MESSAGE_NAME_CONSTRAINTS);
         }
-        this.taskName = taskName;
+        editTaskName(taskName);
+    }
+    
+    public String getTaskName() {
+        return this.taskNameProperty().get();
+    }
+    
+    public StringProperty taskNameProperty() {
+        return this.taskName;
     }
     
     public void editTaskName(String newTaskName) throws IllegalValueException {
@@ -33,7 +66,7 @@ public class TaskName {
         if (!isValidName(newTaskName)) {
             throw new IllegalValueException(MESSAGE_NAME_CONSTRAINTS);
         }
-        this.taskName = newTaskName;
+        this.taskNameProperty().set(newTaskName);
     }
     /**
      * Returns true if a given string is a valid task name.
@@ -45,7 +78,7 @@ public class TaskName {
 
     @Override
     public String toString() {
-        return taskName;
+        return taskName.toString();
     }
 
     @Override

@@ -41,7 +41,7 @@ public class TaskCard extends UiPart{
 
     @FXML
     public void initialize() {
-        taskName.setText(task.getTaskName().taskName);
+        taskName.setText(task.getTaskName().getTaskName());
         id.setText(displayedIndex + ". ");
         date.setText(task.getDate().value);
         startTime.setText(task.getStartTime().value);

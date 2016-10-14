@@ -1,5 +1,15 @@
 package seedu.ggist.model.task;
 
+import javafx.beans.Observable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener.Change;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.ggist.commons.exceptions.DuplicateDataException;
@@ -42,7 +52,7 @@ public class UniqueTaskList implements Iterable<Task> {
     	}
     }
 
-    private final ObservableList<Task> internalList = FXCollections.observableArrayList();
+    private final ObservableList<Task> internalList = FXCollections.observableArrayList(item -> new Observable[] {item.getTaskName().filteredProperty()});
 
     /**
      * Constructs empty TaskList.
