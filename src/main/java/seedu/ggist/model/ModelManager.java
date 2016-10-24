@@ -61,8 +61,10 @@ public class ModelManager extends ComponentManager implements Model {
     public ModelManager(ReadOnlyTaskManager initialData, UserPrefs userPrefs) {
         taskManager = new TaskManager(initialData);
         filteredTasks = new FilteredList<>(taskManager.getTasks());
+        sortedTasks = new SortedList<>(filteredTasks);
         today = LocalDate.now().format(DateTimeFormatter.ofPattern("EEE, dd MMM YY"));
-        updateFilteredListToShowDate(today);
+        lastListing = today;
+        updateListing();
     }
     
     public void setLastListing(String listing) {
@@ -133,7 +135,7 @@ public class ModelManager extends ComponentManager implements Model {
      
     @Override
     public UnmodifiableObservableList<ReadOnlyTask> getFilteredTaskList() {
-        return new UnmodifiableObservableList<>(filteredTasks);
+        return getSortedTaskList();
     }
     
     @Override
@@ -274,7 +276,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         public boolean run(ReadOnlyTask task) {
             return taskNameKeyWords.stream()
-                    .filter(keyword -> StringUtil.containsIgnoreCase(task.toString(), keyword))
+                    .filter(keyword -> StringUtil.containsIgnoreCase(task.getTaskName().taskName, keyword))
                     .findAny()
                     .isPresent();
         }
