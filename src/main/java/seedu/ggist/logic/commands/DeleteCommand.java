@@ -38,12 +38,9 @@ public class DeleteCommand extends Command {
             indicateAttemptToExecuteIncorrectCommand();
             return new CommandResult(Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
         }
-       
-        ReadOnlyTask taskToDelete = lastShownList.get(targetIndexes.get(i) - 1 - i);
+        ReadOnlyTask taskToMarkDelete = lastShownList.get(targetIndexes.get(i) - 1 - i);
         try {
-            model.deleteTask(taskToDelete);
-            listOfCommands.push(COMMAND_WORD);
-            listOfTasks.push(taskToDelete);
+            model.deleteTask(taskToMarkDelete);
         } catch (TaskNotFoundException pnfe) {
             assert false : "The target task cannot be missing";
         }
@@ -59,13 +56,8 @@ public class DeleteCommand extends Command {
                 sb.append(targetIndexes.get(i));
             }
         }
-        return new CommandResult(String.format(MESSAGE_DELETE_TASK_SUCCESS,sb.toString()));
-    }
 
-
-    @Override
-    public  String toString(){
-        return COMMAND_WORD;
+        return new CommandResult(String.format(MESSAGE_DELETE_TASK_SUCCESS, sb.toString()));
     }
 
 }

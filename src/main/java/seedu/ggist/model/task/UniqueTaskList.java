@@ -60,9 +60,9 @@ public class UniqueTaskList implements Iterable<Task> {
      */
     public void add(Task toAdd) throws DuplicateTaskException {
         assert toAdd != null;
-        if (contains(toAdd)) {
+ /*       if (contains(toAdd)) {
             throw new DuplicateTaskException();
-        }
+        } */
         internalList.add(toAdd);
     }
 
@@ -88,15 +88,29 @@ public class UniqueTaskList implements Iterable<Task> {
             break;
         case "start date":
                 toEdit.getStartDate().editDate(value);
+                toEdit.constructStartDateTime(toEdit.getStartDate(), toEdit.getStartTime());
             break;
         case "start time":
                 toEdit.getStartTime().editTime(value);
+                toEdit.constructEndDateTime(toEdit.getEndDate(), toEdit.getEndTime());
             break;
         case "end date":
                 toEdit.getEndDate().editDate(value);
+                if (toEdit.getStartDate().value.equals(Messages.MESSAGE_NO_START_DATE_SPECIFIED) || 
+                        toEdit.getStartTime().value.equals(Messages.MESSAGE_NO_START_TIME_SET)) {
+                    toEdit.constructStartDateTime(toEdit.getEndDate(), toEdit.getEndTime());
+                } else {
+                    toEdit.constructEndDateTime(toEdit.getEndDate(), toEdit.getEndTime());
+                }
             break;
         case "end time":
                 toEdit.getEndTime().editTime(value);
+                if (toEdit.getStartDate().value.equals(Messages.MESSAGE_NO_START_DATE_SPECIFIED) || 
+                        toEdit.getStartTime().value.equals(Messages.MESSAGE_NO_START_TIME_SET)) {
+                    toEdit.constructStartDateTime(toEdit.getEndDate(), toEdit.getEndTime());
+                } else {
+                    toEdit.constructEndDateTime(toEdit.getEndDate(), toEdit.getEndTime());
+                }
             break;
         case "priority":
                 toEdit.getPriority().editPriority(value);

@@ -13,6 +13,7 @@ import seedu.ggist.model.task.Task;
 import seedu.ggist.model.task.EventTask;
 import seedu.ggist.model.task.ReadOnlyTask;
 import seedu.ggist.model.task.UniqueTaskList;
+import seedu.ggist.model.task.UniqueTaskList.TaskNotFoundException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -104,6 +105,15 @@ public class TaskManager implements ReadOnlyTaskManager {
             throw new UniqueTaskList.TaskNotFoundException();
         }
     }
+    
+
+    public void deleteTask(ReadOnlyTask key) throws TaskNotFoundException {
+        if (tasks.contains(key)) {
+            key.setDeleted();
+        } else {
+            throw new UniqueTaskList.TaskNotFoundException();
+        }      
+    }
 
     public void editTask(ReadOnlyTask key, String field, String value) throws UniqueTaskList.TaskNotFoundException, IllegalValueException {
         if (tasks.contains(key)) {
@@ -146,4 +156,5 @@ public class TaskManager implements ReadOnlyTaskManager {
         // your own
         return Objects.hash(tasks);
     }
+
 }
