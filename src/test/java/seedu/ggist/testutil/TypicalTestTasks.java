@@ -19,24 +19,24 @@ public class TypicalTestTasks {
             		.withStartTime(Messages.MESSAGE_NO_START_TIME_SET)
             		.withEndDate(Messages.MESSAGE_NO_END_DATE_SPECIFIED)
             		.withEndTime(Messages.MESSAGE_NO_END_TIME_SET)
-            		.withPriority("low").build();
+            		.build();
             deadline = new TaskBuilder().withName("complete assignment")
             		.withStartDate(Messages.MESSAGE_NO_START_DATE_SPECIFIED)
             		.withStartTime(Messages.MESSAGE_NO_START_TIME_SET)
-            		.withEndDate("Thu, 21 Oct 16").withEndTime("23:59")
-            		.withPriority("high").build();
+            		.withEndDate("Tue, 22 Nov 16").withEndTime("11:59 pm")
+            		.build();
             event = new TaskBuilder().withName("watch movie")
-            		.withStartDate("Fri, 22 Oct 16").withStartTime("21:00")
-            		.withEndDate("Fri, 22 Oct 16").withEndTime("23:00")
+            		.withStartDate("Tue, 22 Nov 16").withStartTime("9:00 pm")
+            		.withEndDate("Tue, 22 Nov 16").withEndTime("11:00 pm")
             		.withPriority("med").build();
             
             //Manually added
             dance = new TaskBuilder()
             		.withName("dance practice")
-            		.withStartDate("Wed, 12 Oct 16")
-            		.withStartTime("12:00")
-            		.withEndDate("Wed, 12 Oct 16")
-            		.withEndTime("13:00")
+            		.withStartDate("Tue, 22 Nov 16")
+            		.withStartTime("12:00 pm")
+            		.withEndDate("Tue, 22 Nov 16")
+            		.withEndTime("1:00 pm")
             		.withPriority("high")
             		.build();
         } catch (IllegalValueException e) {

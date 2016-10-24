@@ -14,7 +14,7 @@
         <taskName>complete assignment</taskName>
         <startDate>No start date specified</startDate>
         <startTime>No start time set</startTime>
-        <endDate>Fri, 21 Oct 16</endDate>
+        <endDate>Tue, 22 Nov 16</endDate>
         <endTime>11:59 PM</endTime>
         <done>false</done>
          <deleted>false</deleted>
@@ -22,9 +22,9 @@
     </tasks>
     <tasks>
         <taskName>watch movie</taskName>
-        <startDate>Sat, 22 Oct 16</startDate>
+        <startDate>Tue, 22 Nov 16</startDate>
         <startTime>9:00 PM</startTime>
-        <endDate>Sat, 22 Oct 16</endDate>
+        <endDate>Tues, 22 Nov 16</endDate>
         <endTime>11:00 PM</endTime>
         <done>false</done>
         <deleted>false</deleted>
@@ -32,9 +32,9 @@
     </tasks>
     <tasks>
         <taskName>dance practice</taskName>
-        <startDate>Wed, 12 Oct 16</startDate>
+        <startDate>Tue, 22 Nov 16</startDate>
         <startTime>12:00 PM</startTime>
-        <endDate>Wed, 12 Oct 16</endDate>
+        <endDate>Tue, 22 Nov 16</endDate>
         <endTime>1:00 PM</endTime>
         <done>false</done>
         <deleted>false</deleted>

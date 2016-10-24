@@ -7,6 +7,9 @@
         <startTime></startTime>
         <endDate></endDate>
         <endTime></endTime>
+		<priority></priority>
+	<done></done>
+	<deleted></deleted>
     </tasks>
     <tags>
         <name></name>
