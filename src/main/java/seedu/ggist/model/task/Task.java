@@ -22,6 +22,7 @@ public class Task implements ReadOnlyTask{
     protected TaskTime endTime;
     protected Priority priority;
     protected boolean done;
+    protected boolean deleted;
     
     protected Date start;
     protected Date end;
@@ -40,12 +41,13 @@ public class Task implements ReadOnlyTask{
         this.endTime = endTime;
         this.priority = priority;
         this.done = false;
-        if (startDate.value.equals(Messages.MESSAGE_NO_START_DATE_SPECIFIED) || startTime.value.equals(Messages.MESSAGE_NO_START_TIME_SET)) {
-            start = constructDateTime(endDate, endTime);
+        this.deleted = false;
+        if (startDate.value.equals(Messages.MESSAGE_NO_START_DATE_SPECIFIED) && startTime.value.equals(Messages.MESSAGE_NO_START_TIME_SET)) {
+            constructStartDateTime(endDate, endTime);
         } else {
-            start = constructDateTime(startDate, startTime);
+            constructStartDateTime(startDate, startTime);
         }
-        end = constructDateTime(endDate, endTime);
+        constructEndDateTime(endDate, endTime);
         
         Date currentDate  = new Date();
         if (end.before(currentDate)) {
@@ -69,27 +71,48 @@ public class Task implements ReadOnlyTask{
     public void setUnDone() {
         done = false;
     }
+    
+    public void setDeleted() {
+        deleted = true;
+    }
       
-    public Date constructDateTime(TaskDate date, TaskTime time) throws IllegalValueException {
+    public void constructStartDateTime(TaskDate date, TaskTime time) throws IllegalValueException {
         if ((date.value.equals(Messages.MESSAGE_NO_START_DATE_SPECIFIED) || date.value.equals(Messages.MESSAGE_NO_END_DATE_SPECIFIED)) && 
             (time.value.equals(Messages.MESSAGE_NO_START_TIME_SET) || time.value.equals(Messages.MESSAGE_NO_END_TIME_SET))) {
             Date date4 = new DateTimeParser("1st January 2050 11:59pm").getDateTime();
-            return date4;
+            start = date4;
         } else if ((date.value.equals(Messages.MESSAGE_NO_START_DATE_SPECIFIED) || date.value.equals(Messages.MESSAGE_NO_END_DATE_SPECIFIED))){
             Date date1 = new DateTimeParser("1st January 2050 " + time.value).getDateTime();
-            return date1;
+            start =  date1;
         } else if ((time.value.equals(Messages.MESSAGE_NO_START_TIME_SET) || time.value.equals(Messages.MESSAGE_NO_END_TIME_SET))) {
             Date date2 = new DateTimeParser("11:59 pm " + date.value).getDateTime();
-            return date2;
+            start =  date2;
         } else {
             Date date3 = new DateTimeParser(time.value + " " + date.value).getDateTime();
-            return date3;
+            start =  date3;
+        }
+    }
+    
+    public void constructEndDateTime(TaskDate date, TaskTime time) throws IllegalValueException {
+        if ((date.value.equals(Messages.MESSAGE_NO_START_DATE_SPECIFIED) || date.value.equals(Messages.MESSAGE_NO_END_DATE_SPECIFIED)) && 
+            (time.value.equals(Messages.MESSAGE_NO_START_TIME_SET) || time.value.equals(Messages.MESSAGE_NO_END_TIME_SET))) {
+            Date date4 = new DateTimeParser("1st January 2050 11:59pm").getDateTime();
+            end =  date4;
+        } else if ((date.value.equals(Messages.MESSAGE_NO_START_DATE_SPECIFIED) || date.value.equals(Messages.MESSAGE_NO_END_DATE_SPECIFIED))){
+            Date date1 = new DateTimeParser("1st January 2050 " + time.value).getDateTime();
+            end =  date1;
+        } else if ((time.value.equals(Messages.MESSAGE_NO_START_TIME_SET) || time.value.equals(Messages.MESSAGE_NO_END_TIME_SET))) {
+            Date date2 = new DateTimeParser("11:59 pm " + date.value).getDateTime();
+            end = date2;
+        } else {
+            Date date3 = new DateTimeParser(time.value + " " + date.value).getDateTime();
+            end =  date3;
         }
     }
 
     
     @Override
-    public boolean getDone() {
+    public boolean isDone() {
         return done;
     }
 
@@ -151,6 +174,13 @@ public class Task implements ReadOnlyTask{
         // use this method for custom fields hashing instead of implementing your own
         return Objects.hash(taskName,startDate, startTime, endDate, endTime, priority);
     }
+
+
+    @Override
+    public boolean isDeleted() {
+        return deleted;
+    }
+
 
 
 }
