@@ -23,7 +23,7 @@ public class Task implements ReadOnlyTask{
     protected Priority priority;
     protected boolean done;
     protected boolean deleted;
-    
+    protected boolean overdue;
     protected Date start;
     protected Date end;
 
@@ -50,10 +50,9 @@ public class Task implements ReadOnlyTask{
         constructEndDateTime(endDate, endTime);
         
         Date currentDate  = new Date();
-        if (end.before(currentDate)) {
-            throw new IllegalValueException("You have enetered a past date or time!");
-        }
-        
+        if (end.before(currentDate) && done == false) {
+            overdue = true;
+        }      
     }
     
 
@@ -66,6 +65,7 @@ public class Task implements ReadOnlyTask{
     }
     public void setDone() {
         done = true;
+        overdue = false;
     }
     
     public void setUnDone() {
@@ -173,6 +173,11 @@ public class Task implements ReadOnlyTask{
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
         return Objects.hash(taskName,startDate, startTime, endDate, endTime, priority);
+    }
+
+    @Override
+    public boolean isOverdue() {
+        return overdue;
     }
 
 

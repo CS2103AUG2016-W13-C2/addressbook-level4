@@ -25,7 +25,8 @@ public class TestTask implements ReadOnlyTask {
     private boolean done;
     private boolean undo;
     private boolean deleted;
-
+    private boolean overdue;
+    
     public void setTaskName(TaskName taskName) {
         this.taskName = taskName;
     }
@@ -97,13 +98,13 @@ public class TestTask implements ReadOnlyTask {
             sb.append(this.getEndTime().value);
         } else {
         	// event task, append everything
-        	sb.append(","+ this.getStartDate().getTestValue() + " ");
+        	sb.append(" ,"+ this.getStartDate().getTestValue() + " ");
         	sb.append(this.getStartTime().value + ",");
         	sb.append(this.getEndDate().getTestValue() + " ");
         	sb.append(this.getEndTime().value);
         }
         if (!(this.getPriority() == null))
-        	sb.append("-" + this.getPriority().value);
+        	sb.append(" -" + this.getPriority().value);
         return sb.toString();
     }
 
@@ -134,6 +135,7 @@ public class TestTask implements ReadOnlyTask {
     }
 
     @Override
+
     public boolean isDeleted() {
         return deleted;
     }
@@ -177,6 +179,11 @@ public class TestTask implements ReadOnlyTask {
     @Override
     public void setDeleted() {
         deleted = true;
+    }
+    
+    @Override
+    public boolean isOverdue() {
+        return overdue;
     }
 
 }

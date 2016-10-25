@@ -158,7 +158,7 @@ public class ModelManager extends ComponentManager implements Model {
                     } else {
                         return 1;
                     }
-                }
+            }
         };
         return new UnmodifiableObservableList<>(new SortedList(filteredTasks, compareDateTime));
     }
@@ -185,6 +185,7 @@ public class ModelManager extends ComponentManager implements Model {
         };
        sortedTasks.setComparator(compareDateTime);
     }
+    
 
     @Override
     public void updateFilteredListToShowAll() {
@@ -327,7 +328,6 @@ public class ModelManager extends ComponentManager implements Model {
                    taskDateKeyWords.equalsIgnoreCase(task.getEndDate().toString())) && !task.isDone() && !task.isDeleted()) ||
                    (task.getStartDate().value.equals(Messages.MESSAGE_NO_START_DATE_SPECIFIED) && 
                     task.getEndDate().value.equals(Messages.MESSAGE_NO_END_DATE_SPECIFIED) && !task.isDone() && !task.isDeleted());
-                   
         }
 
         @Override

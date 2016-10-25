@@ -23,6 +23,7 @@ public interface ReadOnlyTask {
     boolean isDeleted();
     void constructStartDateTime(TaskDate date, TaskTime time) throws IllegalValueException;
     void constructEndDateTime(TaskDate date, TaskTime time) throws IllegalValueException;
+    boolean isOverdue();
 
     /**
      * Returns true if both have the same state. (interfaces cannot override .equals)
@@ -37,6 +38,7 @@ public interface ReadOnlyTask {
                 && other.getEndTime().equals(this.getEndTime())
                 && isDone() == this.isDone()
                 && isDeleted() == this.isDeleted()
+                && isOverdue() == this.isOverdue()
                 && other.getPriority().equals(this.getPriority())
          );
     }
@@ -61,6 +63,7 @@ public interface ReadOnlyTask {
                 .append(getPriority());
         return builder.toString();
     }
+
     void setDeleted();
     void setDone();
     void setUnDone();
