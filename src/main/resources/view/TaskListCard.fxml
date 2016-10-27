@@ -28,14 +28,17 @@
                     <children>
                         <HBox alignment="CENTER_LEFT" spacing="5">
                             <children>
-                                <HBox>
+                                <HBox prefHeight="29.0" prefWidth="197.0">
                                     <Label fx:id="id" ellipsisString="" minWidth="-Infinity" prefHeight="23.0" prefWidth="35.0" styleClass="cell_id_label" text="index">
                               <HBox.margin>
                                  <Insets right="5.0" top="2.0" />
                               </HBox.margin></Label>
-                                    <Label fx:id="taskName" minWidth="-Infinity" prefWidth="900.0" styleClass="cell_name_label" text="task name" textOverrun="CENTER_ELLIPSIS" wrapText="true" />
+                                    <Label fx:id="taskName" minWidth="-Infinity" styleClass="cell_name_label" text="task name" textOverrun="CENTER_ELLIPSIS" wrapText="true" />
                                 </HBox>
                             </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                         </HBox>
                     </children>
                <padding>
@@ -99,6 +102,12 @@
          <rowConstraints>
             <RowConstraints minHeight="-Infinity" prefHeight="60.0" />
          </rowConstraints>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
         </GridPane>
     </children>
+   <padding>
+      <Insets right="5.0" />
+   </padding>
 </HBox>
