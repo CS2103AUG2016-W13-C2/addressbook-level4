@@ -17,7 +17,7 @@ public class ListCommand extends Command {
             + "Parameter: [all] , [done] or [DATE]\n"
             + "Empty paramter lists all undone tasks in GGist\n"
             + "Example: " + COMMAND_WORD + " done or " + COMMAND_WORD + " 13 Oct/monday/today";
-    private final static String LIST_ARGS_VALIDATION = "(all)|(done)|(\\w{3}, \\d{2} \\w{3} \\d{2})"; 
+    private final static String LIST_ARGS_VALIDATION = "(all)|(done)|(high)|(med)|(low)|(\\w{3}, \\d{2} \\w{3} \\d{2})"; 
     
     private String listing;
     
@@ -39,6 +39,8 @@ public class ListCommand extends Command {
             model.updateFilteredListToShowAllDone();
         } else if (TaskDate.isValidDateFormat(listing)) {
             model.updateFilteredListToShowDate(listing);
+        } else if(listing.equals("high") || listing.equals("med") || listing.equals("low")) { 
+            model.updateFilteredListToShowPriority(listing);
         } else {
             model.updateFilteredListToShowAllUndone();
         }

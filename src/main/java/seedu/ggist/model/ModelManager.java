@@ -155,6 +155,8 @@ public class ModelManager extends ComponentManager implements Model {
             updateFilteredListToShowAllDone();
         } else if (lastListing.equals("all")){
             updateFilteredListToShowAll();
+        } else if (lastListing.equals("high") || lastListing.equals("med") || lastListing.equals("low")) {
+            updateFilteredListToShowPriority(lastListing);
         } else if (TaskDate.isValidDateFormat(lastListing)) {
             updateFilteredListToShowDate(lastListing);
         }
@@ -208,6 +210,16 @@ public class ModelManager extends ComponentManager implements Model {
     private void updateFilteredListToShowDate(Expression expression) {
         filteredTasks.setPredicate(expression::satisfies);
     }
+    
+    @Override
+    public void updateFilteredListToShowPriority(String keyword){
+        updateFilteredTaskList(new PredicateExpression(new PriorityQualifier(keyword)));
+    }
+
+    private void updateFilteredListToShowPriority(Expression expression) {
+        filteredTasks.setPredicate(expression::satisfies);
+    }
+  //@@a
   //@@author A0144727B
     @Override
     public void updateFilteredTaskList(Set<String> keywords){
@@ -322,10 +334,26 @@ public class ModelManager extends ComponentManager implements Model {
                    (task.getEndTime().value.equals(Messages.MESSAGE_NO_END_TIME_SET)) && !task.isDone())) ||
                    (task.isOverdue() && !task.isDone())));
         }
-      //@@author
+        
         @Override
         public String toString() {
             return "name=" + String.join(", ", taskDateKeyWords);
         }
+  
     }
+        
+        private class PriorityQualifier implements Qualifier {
+            private String priority;
+
+            PriorityQualifier(String priority) {
+                this.priority = priority;
+            }
+            @Override
+            public boolean run(ReadOnlyTask task) {
+                return (priority.equals(task.getPriority().toString()) && !task.isDone());                      
+            }
+        }
+        
+      //@@author
+
 }

@@ -69,6 +69,8 @@ public class ListingHeader extends UiPart {
             this.listing.setText("ALL COMPLETED TASKS");
         } else if (listing.equals("")) {
             this.listing.setText("TASKS NOT COMPLETED");
+        } else if (listing.equals("high") || listing.equals("med") || listing.equals("low") ) {
+            this.listing.setText(listing.toUpperCase() + " PRIOTIY TASKS");            
         } else {
             SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd MMMMM yyyy");
             this.listing.setText(sdf.format(new PrettyTimeParser().parse(listing).get(0)).toString());

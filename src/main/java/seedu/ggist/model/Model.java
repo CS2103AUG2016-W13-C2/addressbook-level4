@@ -64,5 +64,8 @@ public interface Model {
     
     /**Returns the most recent type of listing of the filtered task list */
    String getLastListing();
+   
+   /**Updates the filter of the filtered task list to priority */
+    void updateFilteredListToShowPriority(String keywords);
 
 }

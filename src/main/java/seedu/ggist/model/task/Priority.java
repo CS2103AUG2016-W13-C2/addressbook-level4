@@ -21,7 +21,7 @@ public class Priority {
 
     public static final String PRIORITY_VALIDATION_REGEX = "low|med|high|"+ Messages.MESSAGE_NO_PRIORITY_VALUE;
 
-    public String value;
+    public static String value;
 
     /**
      * Validates given priority.
