@@ -5,6 +5,11 @@
 * [Introduction](#introduction)
 * [Setting Up](#setting-up)
 * [Design](#design)
+    * [Architecture](#architecture)
+    * [UI Component](#ui-component)
+    * [Logic Component](#logic-component)
+    * [Model Component](#model-component)
+    * [Storage Component](#storage-component)
 * [Implementation](#implementation)
 * [Testing](#testing)
 * [Dev Ops](#dev-ops)
@@ -128,7 +133,7 @@ Figure 3 shows how the `EventsCenter` reacts to the event (`add floating task`).
 **API** : [`Ui.java`](../src/main/java/seedu/ggist/ui/Ui.java)
 
 The `UI` consists of a `MainWindow` that is made up of parts such as `CommandBox`, `ResultDisplay`,`TaskListPanel`,
-`StatusBarFooter` and `BrowserPanel`.These UI parts inherit from the abstract `UiPart` class ,and they can be loaded using the `UiPartLoader`.
+`StatusBarFooter` and `Listingheader`.These UI parts inherit from the abstract `UiPart` class ,and they can be loaded using the `UiPartLoader`.
 
 The `UI` component uses JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files which are in the `src/main/resources/view` folder.<br>
 
@@ -148,10 +153,10 @@ The `UI` component,
 
 The `Logic` component uses the `Parser` class to parse the user command. This results in a `Command` object being executed by the `LogicManager`. The command execution can affect the `Model` (e.g. adding a task) and/or raise events. The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
 
-Figure 6 displays the interactions within the `Logic` component for the `execute("delete 1")` API call.<br>
+Figure 6 displays the interactions within the `Logic` component for the `execute("edit 1 start date today")` API call.<br>
  
-<img src="images/DeleteTaskSdForLogic.png" width="800"><br>
->**_Figure 6_**: Sequence Diagram - shows interactions within the `Logic` component for the `execute("delete 1")` API call
+<img src="images/EditTaskSdForLogic.png" width="800"><br>
+>**_Figure 6_**: Sequence Diagram - shows interactions within the `Logic` component for the `execute("edit 1 start date today")` API call
 
 ### Model component
 <!-- @@author A0138411N --> 
@@ -220,7 +225,7 @@ There are two types of tests:
   
 2. **Non-GUI Tests** - These are tests not involving the GUI. They include: 
    * _Unit tests_ targeting the lowest level methods/classes. <br>
-      e.g. `seedu.ggist.commons.UrlUtilTest`
+      e.g. `seedu.ggist.commons.AppUtilTest`
    * _Integration tests_ that are checking the integration of multiple code units 
      (those code units are assumed to be working).<br>
       e.g. `seedu.ggist.storage.StorageManagerTest`
@@ -285,18 +290,16 @@ Priority | As a ... | I want to ... | So that I can...
 `* * *` | user | Set a deadline for a task | Be reminded of impending deadline
 `* * *` | user | Delete a task | Totally remove task that I no longer care about
 `* * *` | user | Strike off a task | View my completed task if I want to
+`* * *` | user | Mark a completed task incomplete | Unmark done task if I want to
 `* * *` | user | Edit a task | Make changes to a task as necessary
 `* * *` | user | Undo an action | Recover unwanted changes
+`* * *` | user | Redo an action | Recover unwanted undo
 `* * *` | user | View all tasks in specific day | Easily identify my remaining tasks for the day
 `* * *` | user | Search for tasks using keywords | Find all relevant tasks with ease
 `* * *` | user | Backup my data on local storage | Ensure my recorded tasks will not be lost
 `* * *` | user | Have some flexibility in my inputs | Use some variations while entering a task
-`* *` | user | Set a recurring task | Avoid constantly entering the same task for different days 
-`* *` | user | Block off time slots | Avoid scheduling conflicts tasks with unconfirmed timings
 `* *` | user | Set priority level for a task | Easily identify a task that require immediate attention
-`* *` | user | Launch the application with a keyboard shortcut | Access the application without using the mouse
 `* *` | user | View the day’s tasks when the application is launched | Know which tasks to complete for the day without any additional input
-`*` | user | Sync my data to Google Calendar | Sync my data across multiple desktops
 `*` | user | Carry forward incomplete tasks to the following day | Be reminded to complete the task the following day without any input
 
 ## Appendix B : Use Cases
