@@ -17,15 +17,15 @@ public class AppUtilTest {
 
     @Test
     public void getImage_exitingImage(){
-        assertNotNull(AppUtil.getImage("/images/address_book_32.png"));
+        assertNotNull(AppUtil.getImage("/images/giraffe.png"));
     }
 
-/*
+
     @Test
     public void getImage_nullGiven_assertionError(){
         thrown.expect(AssertionError.class);
         AppUtil.getImage(null);
     }
-*/
+
 
 }

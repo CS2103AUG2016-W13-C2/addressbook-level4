@@ -154,10 +154,10 @@ Figure 6 displays the interactions within the `Logic` component for the `execute
 >**_Figure 6_**: Sequence Diagram - shows interactions within the `Logic` component for the `execute("delete 1")` API call
 
 ### Model component
-
+<!-- @@author A0138411N --> 
 <img src="images/ModelClassDiagram.png" width="800"><br>
 >**_Figure 7_**: Model Diagram
-
+<!-- @@author--> 
 **API** : [`Model.java`](../src/main/java/seedu/ggist/model/Model.java)
 
 The `Model` component,
@@ -175,11 +175,11 @@ The `Model` component,
 **API** : [`Storage.java`](../src/main/java/seedu/ggist/storage/Storage.java)
 
 The `Storage` component,
-*saves `UserPref` objects in json format and reads it back.
-*saves the GGist data in xml format and reads it back.
-
+* saves `UserPref` objects in json format and reads it back.
+* saves the GGist data in xml format and reads it back.
+<!-- @@author--> 
 ### Common classes
-
+<!-- @@author A0138420N --> 
 Classes used by multiple components are in the `seedu.ggist.commons` package.
 
 ## Implementation
